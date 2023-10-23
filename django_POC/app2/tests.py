@@ -4,3 +4,4 @@ from django.test import TestCase
 def someFunc():
     pass
     pass
+    pass
