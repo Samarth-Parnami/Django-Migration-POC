@@ -1,0 +1,39 @@
+name: Django Migration Test
+on:
+    push:
+jobs:
+    migrations-test:
+        name: Migrations Test 
+        runs-on: self-hosted
+        strategy:
+          matrix:
+            app_name: ['app', 'dbc', 'link_page', 'lead']
+
+        steps:
+        - uses: actions/checkout@v2
+
+        - name: Fetch latest Migrations for ${{matrix.app_name}}
+          id: head
+          run: |
+            head_migration_files=`python manage.py showmigrations ${{matrix.app_name}} | grep -v '^\s*(\[\?\])\.*$'`
+            
+
+        - uses: actions/checkout@v2
+          with: 
+            ref: ${{github.event.before}}
+
+        - name: Fetch Head Ref Migrations for ${{matrix.app_name}}
+          id: base
+          run: |
+            base_migration_files=`python manage.py showmigrations ${{matrix.app_name}} | grep -v '^\s*(\[\?\])\.*$'`
+            
+        - name: Compare Migration Files
+          run: |
+            echo '${{github.event.before}}'
+            echo $base_migration_files
+            echo "================="
+            echo $head_migration_files
+            echo '${{github.sha}}'
+
+
+                
