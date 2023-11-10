@@ -10,8 +10,11 @@ jobs:
             app_name: ['app', 'dbc', 'link_page', 'lead']
 
         steps:
-        - uses: actions/checkout@v2
+        - uses: actions/setup-python@v4
+          with:
+            python-version: '3.7' 
 
+        - uses: actions/checkout@v2
         - name: Fetch latest Migrations for ${{matrix.app_name}}
           id: head
           run: |
