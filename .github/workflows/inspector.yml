@@ -38,3 +38,4 @@ jobs:
             - name: Django Migrations Inspection
               run: |
                   ls
+
