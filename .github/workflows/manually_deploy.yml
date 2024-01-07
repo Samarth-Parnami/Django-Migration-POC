@@ -19,5 +19,5 @@ jobs:
       - name: Check Migrations
         uses: ./.github/actions/django-migration-inspector
           with:
-            skip-history-check: true
+            skip-history-check: 'true'
             root-dir: 'django_POC/'
