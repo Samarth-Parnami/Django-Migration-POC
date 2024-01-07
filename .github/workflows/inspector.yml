@@ -1,6 +1,6 @@
 name: Django Migrations Inspection
 on: 
-    worflow_dispatch:
+    workflow_dispatch:
     workflow_call:
         inputs:
             database:
