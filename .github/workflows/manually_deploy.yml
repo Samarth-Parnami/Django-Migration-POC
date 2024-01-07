@@ -14,5 +14,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+      - name: List Directory
+        run: ls
       - name: Check Migrations
         uses: ./.github/workflows/inspector.yml
