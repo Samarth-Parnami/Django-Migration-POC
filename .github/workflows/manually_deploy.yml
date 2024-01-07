@@ -1,0 +1,17 @@
+name: Manually deploy to QA
+on:
+  workflow_dispatch:
+
+jobs:
+  deployqa:
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        python-version: [3.7]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Check Migrations

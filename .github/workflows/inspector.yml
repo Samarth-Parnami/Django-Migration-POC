@@ -1,0 +1,40 @@
+name: Django Migrations Inspection
+on: 
+    worflow_dispatch:
+    workflow_call:
+        inputs:
+            database:
+                description: 'database alias'
+                required: false
+                default: 'default'
+                type: string
+            skip-history-check:
+                description: 'skip history check'
+                required: false
+                default: false
+                type: boolean
+            python-version:
+                description: 'python version'
+                required: false
+                default: '3.7'
+                type: string
+            root-dir:
+                description: 'root directory for django app'
+                required: false
+                default: '.'
+                type: string
+jobs:
+    inspect:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-python@v2
+              with:
+                  python-version: input.python-version
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -i https://test.pypi.org/simple/ django-migration-inspector
+            - name: Django Migrations Inspection
+              run: |
+                  ls
