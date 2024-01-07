@@ -17,4 +17,4 @@ jobs:
       - name: List Directory
         run: ls -a
       - name: Check Migrations
-        uses: ./.github/workflows/inspector.yml
+        uses: ./.github/actions/django-migration-inspector
