@@ -15,6 +15,6 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: List Directory
-        run: ls
+        run: ls -a
       - name: Check Migrations
         uses: ./.github/workflows/inspector.yml
