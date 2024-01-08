@@ -17,7 +17,66 @@ jobs:
       - name: List Directory
         run: ls -a
       - name: Check Migrations
+        id: django-migration-inspector
         uses: ./.github/actions/django-migration-inspector
         with:
           skip-history-check: true
           root-dir: 'django_POC/'
+      - name: Post Failure to the Slack Channel
+        if: ${{ failure() && steps.django-migration-inspector.conclusion == 'failure'}}
+        env:
+          GITHUB_WORFLOW_URL: ${{ github.event.workflow_run.url }}
+          WORKFLOW_NUMBER: ${{ github.run_number }}
+        run: |
+        curl --location 'https://hooks.slack.com/services/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' \
+        --header 'Content-Type: application/json' \
+        --data '{
+            "blocks": [
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Inconsistencies found in Django Migrations",
+                        "emoji": true
+                    }
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "👮🏼‍♀️ Inspector found some insconsistencies in the migrations files and exited with code 1. For additional information you can head out to the Github workflow using the button below.\n Additionally you can use `./manage.py inspectmigrations` locally to atleast test out if the migration files are in order or not."
+                    },
+                    "accessory": {
+                        "type": "image",
+                        "image_url": "https://pbs.twimg.com/profile_images/625633822235693056/lNGUneLX_400x400.jpg",
+                        "alt_text": "cute cat"
+                    }
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "Visit the Github workflow."
+                    },
+                    "accessory": {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "#${WORKFLOW_NUMBER}",
+                            "emoji": true
+                        },
+                        "value": "click_me_123",
+                        "url": "${GITHUB_WORFLOW_URL}",
+                        "action_id": "button-action"
+                    }
+                }
+            ]
+        }'
+
+
