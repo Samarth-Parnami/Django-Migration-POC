@@ -32,6 +32,7 @@ jobs:
           skip-history-check: true
           root-dir: 'django_POC/'
         env:
+          WORKFLOW_NAME: ${{ github.workflow }}
           WORKFLOW_URL: https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}
           WORKFLOW_NUMBER: ${{ github.run_number }}
           SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
