@@ -22,6 +22,10 @@ jobs:
         with:
           skip-history-check: true
           root-dir: 'django_POC/'
+        env:
+          WORKFLOW_URL: https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}
+          WORKFLOW_NUMBER: ${{ github.run_number }}
+          SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
       - name: Post Failure to the Slack Channel
         if: ${{ failure() && steps.django-migration-inspector.conclusion == 'failure'}}
         env:

@@ -38,11 +38,9 @@ runs:
       ./$command
     shell: bash
   - name: Alert Failure on Slack
-    if: ${{ failure() && steps.django-migration-inspector.conclusion == 'failure'}}]
+    if: ${{ failure() && steps.django-migration-inspector.conclusion == 'failure'}}
     shell: bash
-    env:
-      WORKFLOW_URL: https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}
     run: |
       echo "Django Migration Inspection Failed"
-      echo "slack url ${{ env.SLACK_WEBHOOK_URL }}"
+      echo "slack url ${{ env.SLACK_WEBHOOK_URL }} ${{WORKFLOW_URL}} ${{WORKFLOW_NUMBER}}"
       
