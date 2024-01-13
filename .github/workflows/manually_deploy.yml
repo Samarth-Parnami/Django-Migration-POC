@@ -16,6 +16,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: List Directory
         run: ls -a
+      - name: Context Variables
+        env: 
+          GITHUB_CONTEXT: ${{ toJson(github) }}   
+        run: echo "$GITHUB_CONTEXT"
       - name: Check Migrations
         id: django-migration-inspector
         uses: ./.github/actions/django-migration-inspector
@@ -27,7 +31,7 @@ jobs:
           WORKFLOW_NUMBER: ${{ github.run_number }}
           SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
           ACTOR: ${{ github.actor }}
-          ACTOR_AVATAR: ${{ github.event.actor.avatar_url }}
+          ACTOR_AVATAR: ${{ github.actor_avatar }}
       - name: Deploy to QA
         run: |
           echo "Deploying to QA"
