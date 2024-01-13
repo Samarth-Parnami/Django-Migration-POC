@@ -69,11 +69,11 @@ jobs:
                           "type": "button",
                           "text": {
                               "type": "plain_text",
-                              "text": "#$WORKFLOW_NUMBER",
+                                "text": "#${{ env.WORKFLOW_NUMBER }}",
                               "emoji": true
                           },
                           "value": "click_me_123",
-                          "url": "$WORKFLOW_URL",
+                          "url": "${{ env.WORKFLOW_URL }}",
                           "action_id": "button-action"
                       }
                   }
