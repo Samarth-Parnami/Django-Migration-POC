@@ -25,7 +25,6 @@ runs:
       pip install django-migration-inspector
     shell: bash
   - name: Django Migrations Inspection
-    id: django-migration-inspector
     run: |
       cd ${{ inputs.root-dir }}
       command="manage.py inspectmigrations"
@@ -37,64 +36,3 @@ runs:
       fi
       ./$command
     shell: bash
-
-    - name: Post Failure to the Slack Channel
-      if: ${{ failure() && steps.django-migration-inspector.conclusion == 'failure'}}
-      env:
-        WORKFLOW_URL: https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}
-        WORKFLOW_NUMBER: ${{ github.run_number }}
-        SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
-      shell: bash
-      run: |
-        curl --location $SLACK_WEBHOOK_URL \
-        --header 'Content-Type: application/json' \
-        --data '{
-            "blocks": [
-                {
-                    "type": "header",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "Migration error on ${{ github.workflow }}",
-                        "emoji": true
-                    }
-                },
-                {
-                    "type": "divider"
-                },
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": "👮🏼‍♀️ Inspector exited with code 1 due to inconsistencies in migration files. For additional information you can head out to the Github workflow using the button below."
-                    },
-                    "accessory": {
-                        "type": "image",
-                        "image_url": "https://pbs.twimg.com/profile_images/625633822235693056/lNGUneLX_400x400.jpg",
-                        "alt_text": "cute cat"
-                    }
-                },
-                {
-                    "type": "divider"
-                },
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": "Visit the Github workflow."
-                    },
-                    "accessory": {
-                        "type": "button",
-                        "text": {
-                            "type": "plain_text",
-                              "text": "#${{ env.WORKFLOW_NUMBER }}",
-                            "emoji": true
-                        },
-                        "value": "click_me_123",
-                        "url": "${{ env.WORKFLOW_URL }}",
-                        "action_id": "button-action"
-                    }
-                }
-            ]
-        }'
-
-
