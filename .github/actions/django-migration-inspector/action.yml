@@ -25,6 +25,7 @@ runs:
       pip install django-migration-inspector
     shell: bash
   - name: Django Migrations Inspection
+    id: django-migration-inspector
     run: |
       cd ${{ inputs.root-dir }}
       command="manage.py inspectmigrations"
@@ -35,4 +36,8 @@ runs:
         command+=" --skip-history-check"
       fi
       ./$command
+    shell: bash
+  - name: Alert Failure on Slack
+    if: ${{ failure() && steps.django-migration-inspector.conclusion == 'failure'}}]
+    run: echo "Django Migration Inspection Failed"
     shell: bash
