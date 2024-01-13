@@ -1,6 +1,7 @@
 name: Manually deploy to QA
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   deployqa:
