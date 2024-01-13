@@ -43,6 +43,7 @@ runs:
     run: |
       echo "Django Migration Inspection Failed"
       echo "slack url ${{ env.SLACK_WEBHOOK_URL }} ${{env.WORKFLOW_URL}} ${{env.WORKFLOW_NUMBER}}"
+      echo "slack url ${{ env.ACTOR }} ${{env.ACTOR_AVATAR}} ${{env.WORKFLOW_NUMBER}}"
       curl --location $SLACK_WEBHOOK_URL --header 'Content-Type: application/json' \
           --data '{"blocks": [
               {"type": "header","text": {"type": "plain_text","text": "Migration error on ${{ env.WORKFLOW_NAME }}","emoji": true}},
