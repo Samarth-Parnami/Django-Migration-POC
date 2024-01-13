@@ -18,7 +18,7 @@ jobs:
         run: ls -a
       - name: Check Migrations
         id: django-migration-inspector
-        uses: .github/actions/django-migration-inspector
+        uses: ./.github/actions/django-migration-inspector
         with:
           skip-history-check: true
           root-dir: 'django_POC/'
