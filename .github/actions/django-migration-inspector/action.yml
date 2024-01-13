@@ -42,5 +42,5 @@ runs:
     shell: bash
     run: |
       echo "Django Migration Inspection Failed"
-      echo "slack url ${{ env.SLACK_WEBHOOK_URL }} ${{WORKFLOW_URL}} ${{WORKFLOW_NUMBER}}"
+      echo "slack url ${{ env.SLACK_WEBHOOK_URL }} ${{env.WORKFLOW_URL}} ${{env.WORKFLOW_NUMBER}}"
       
