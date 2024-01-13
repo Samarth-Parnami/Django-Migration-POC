@@ -27,7 +27,7 @@ jobs:
           WORKFLOW_NUMBER: ${{ github.run_number }}
           SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
           ACTOR: ${{ github.actor }}
-          ACTOR_AVATAR: ${{ github.actor.avatar_url }}
+          ACTOR_AVATAR: ${{ github.event.actor.avatar_url }}
       - name: Deploy to QA
         run: |
           echo "Deploying to QA"
