@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('./requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('./django_POC/*requirements.txt') }}
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
