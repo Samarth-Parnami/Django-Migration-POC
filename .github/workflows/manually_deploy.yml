@@ -28,7 +28,7 @@ jobs:
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          echo "Cache Hit missied"
+          echo "Cache Hit missed"
           pip install -r requirements.txt
 
       - name: Check Migrations
