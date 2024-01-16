@@ -29,7 +29,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           echo "Cache Hit missed"
-          pip install -r requirements.txt
+          pip install -r django_POC/requirements.txt
+          pip install -r django_POC/test-requirements.txt
 
       - name: Check Migrations
         id: django-migration-inspector
