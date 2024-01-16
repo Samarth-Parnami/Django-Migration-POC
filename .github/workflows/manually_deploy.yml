@@ -17,14 +17,20 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: List Directory
         run: ls -a
-      - name: Context Variables
-        env: 
-          GITHUB_CONTEXT: ${{ toJson(github) }}   
-        run: echo "$GITHUB_CONTEXT"
-      - name: Context Variables
-        env: 
-          GITHUB_CONTEXT: ${{ toJson(env) }}   
-        run: echo "$GITHUB_CONTEXT"
+
+      - name: Cache Python dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('./requirements.txt') }}
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache Hit missied"
+          pip install -r requirements.txt
+
       - name: Check Migrations
         id: django-migration-inspector
         uses: ./.github/actions/django-migration-inspector
