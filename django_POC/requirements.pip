@@ -57,3 +57,4 @@ language-data==1.1
 fonttools==4.38.0
 chardet==4.0.0
 launchdarkly-server-sdk==9.1.0
+django-migration-inspector==0.0.3
