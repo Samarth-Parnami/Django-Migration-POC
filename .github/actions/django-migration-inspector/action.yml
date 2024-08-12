@@ -1,0 +1,71 @@
+name: Django Migration Inspection
+description: 'Github action to automate Django Migration Inspection'
+inputs:
+  database:
+    description: 'database alias'
+    required: false
+    default: 'default'
+    type: string
+  skip-history-check:
+    description: 'skip history check'
+    required: false
+    default: false
+    type: boolean
+  root-dir:
+    description: 'root directory for django app'
+    required: true
+    default: '.'
+    type: string
+  restore-key:
+    description: 'Restore Key for caching python dependencies'
+    required: true
+    type: string
+runs:
+  using: "composite"
+  steps:
+  - name: Cache Python dependencies
+    id: cache
+    uses: actions/cache@v2
+    with:
+      path: ~/.cache/pip
+      key: ${{ inputs.restore-key }}
+
+  - name: Install Dependencies
+    if: steps.cache.outputs.cache-hit != 'true'
+    run: |
+      sudo apt-get update
+      sudo apt-get install -y gcc
+      pip install -r ./django_POC/requirements.pip
+      pip install -r ./django_POC/test-requirements.pip
+    shell: bash
+
+  - name: Django Migrations Inspection
+    id: django-migration-inspector
+    run: |
+      command="${{ inputs.root-dir }}/manage.py inspectmigrations --settings beaconstac.test_settings"
+      if [[ "${{ inputs.database }}" != "default" ]]; then
+        command+=" --database=${{ inputs.database }}"
+      fi
+      if [[ ${{ inputs.skip-history-check }} == true ]]; then
+        command+=" --skip-history-check"
+      fi
+      ./$command
+    shell: bash
+
+  - name: Alert Failure on Slack
+    if: ${{ failure() && steps.django-migration-inspector.conclusion == 'failure'}}
+    shell: bash
+    run: |
+      echo "Django Migration Inspection Failed"
+      echo "slack url ${{ env.SLACK_WEBHOOK_URL }} ${{env.WORKFLOW_URL}} ${{env.WORKFLOW_NUMBER}}"
+      echo "slack url ${{ env.ACTOR }} ${{env.ACTOR_AVATAR}} ${{env.WORKFLOW_NUMBER}}"
+      curl --location $SLACK_WEBHOOK_URL --header 'Content-Type: application/json' \
+          --data '{"blocks": [
+              {"type": "header","text": {"type": "plain_text","text": "Migration error on ${{ env.WORKFLOW_NAME }}","emoji": true}},
+              {"type": "divider"},
+              {"type": "section","text": {"type": "mrkdwn","text": "👮🏼‍♀️ Inspector found inconsistencies in migration files. For additional information you can head out to the Github workflow using the button below."},"accessory": {"type": "image","image_url": "https://pbs.twimg.com/profile_images/625633822235693056/lNGUneLX_400x400.jpg","alt_text": "cute cat"}},
+              {"type": "context","elements": [{"type": "mrkdwn","text": "*Workflow Actor*"},{"type": "plain_text","text": "${{ env.ACTOR }}","emoji": true}]},
+              {"type": "section","text": {"type": "mrkdwn","text": "Visit the Github workflow."},"accessory": {"type": "button","text": {"type": "plain_text","text": "#${{ env.WORKFLOW_NUMBER }}","emoji": true},"value": "click_me_123","url": "${{ env.WORKFLOW_URL }}","action_id": "button-action"}},
+              {"type": "divider"}
+            ]
+          }'
