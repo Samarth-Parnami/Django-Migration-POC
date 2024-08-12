@@ -42,7 +42,7 @@ runs:
   - name: Django Migrations Inspection
     id: django-migration-inspector
     run: |
-      command="${{ inputs.root-dir }}/manage.py inspectmigrations --settings beaconstac.test_settings"
+      command="${{ inputs.root-dir }}/manage.py inspectmigrations --settings django_POC.settings"
       if [[ "${{ inputs.database }}" != "default" ]]; then
         command+=" --database=${{ inputs.database }}"
       fi
