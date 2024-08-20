@@ -23,15 +23,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - name: Cache Python dependencies
-    id: cache
-    uses: actions/cache@v2
-    with:
-      path: ~/.cache/pip
-      key: ${{ inputs.restore-key }}
-
   - name: Install Dependencies
-    if: steps.cache.outputs.cache-hit != 'true'
     run: |
       sudo apt-get update
       sudo apt-get install -y gcc
