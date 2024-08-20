@@ -4,3 +4,4 @@ from django.db import models
 
 class MyModel(models.Model):
     name = models.CharField(max_length=10)
+    test_field = models.BooleanField(default=False, null=False, blank=False)
