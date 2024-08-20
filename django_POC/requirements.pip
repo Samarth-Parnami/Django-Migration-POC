@@ -1,5 +1,5 @@
 importlib-metadata==4.13.0
-psycopg2-binary==2.7.6
+psycopg2-binary
 Django==3.2.5
 boto3==1.24.25
 djangorestframework==3.11.2
