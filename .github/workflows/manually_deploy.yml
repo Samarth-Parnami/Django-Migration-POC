@@ -1,7 +1,7 @@
 name: Manually deploy to QA
 on:
   pull_request:
-    branches: [ develop, master ]
+    branches: [ rekindle ]
 
 jobs:
   deployqa:
