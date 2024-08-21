@@ -1,6 +1,7 @@
 name: Manually deploy to QA
 on:
-  workflow_dispatch:
+  pull_request:
+    branches: [ develop, master ]
 
 jobs:
   deployqa:
