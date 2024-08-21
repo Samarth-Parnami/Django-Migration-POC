@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('app1', '0002_test_field'),
+        ('app1', '0001_initial'),
     ]
 
     operations = [
