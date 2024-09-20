@@ -1,4 +1,5 @@
 name: Check the Head Branch Before Merging
+
 on:
   pull_request:
     branches:
