@@ -1,0 +1,16 @@
+name: Check the Head Branch Before Merging
+on:
+  pull_request:
+    branches:
+      - default
+jobs:
+  head-branch-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check the Head Branch
+      run: |
+        if [${{ github.head_ref }} == "develop"]; then
+          echo "You cannot merge into the default branch from branches other than 'develop'."
+          exit 1
+        fi
