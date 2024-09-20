@@ -3,7 +3,7 @@ name: Check the Head Branch Before Merging
 on:
   pull_request:
     branches:
-      - default
+      - main
 jobs:
   head-branch-check:
     runs-on: ubuntu-latest
